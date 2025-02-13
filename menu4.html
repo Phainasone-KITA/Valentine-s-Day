@@ -86,7 +86,7 @@
     <div class="game-container">
         <div id="puzzleBoard" class="puzzle-board"></div>
         <div class="message" id="successMessage">🎉🎉🎉 ເກັ່ງຫຼາຍໆ! 🎉🎉🎉</div>
-        <img src="/images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_d1fdd4d6.jpg" alt="ตัวอย่างจิ๊กซอว์" class="preview">
+        <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_d1fdd4d6.jpg" alt="ตัวอย่างจิ๊กซอว์" class="preview">
     </div>
 
     <button class="button" onclick="goToMenu()">Back to menu</button>
@@ -113,7 +113,7 @@
             for (let i = 0; i < gridSize * gridSize; i++) {
                 let piece = document.createElement("div");
                 piece.classList.add("puzzle-piece");
-                piece.style.backgroundImage = "url('/images/รูปภาพ\ WhatsApp\ 2568-02-13\ เวลา\ 13.30.25_d1fdd4d6.jpg')";
+                piece.style.backgroundImage = "url('images/รูปภาพ\ WhatsApp\ 2568-02-13\ เวลา\ 13.30.25_d1fdd4d6.jpg')";
                 piece.style.backgroundPosition = `-${(i % gridSize) * size}px -${Math.floor(i / gridSize) * size}px`;
                 piece.draggable = true;
                 piece.dataset.index = i;

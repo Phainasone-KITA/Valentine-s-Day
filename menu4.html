@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Noto+Sans+Lao+Looped:wght@100..900&family=Phetsarath:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fd);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        h1 {
+            font-size: 36px;
+            color: #ff85a2;
+            margin-top: 20px;
+            font-family: 'Merriweather', serif;
+        }
+        span {
+            color: #769ddb;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 2px;
+            background-color: #ddd;
+            padding: 10px 10px 15px 10px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .puzzle-piece {
+            width: 100px;
+            height: 100px;
+            background-size: 300px 300px;
+            cursor: grab;
+            touch-action: none;
+            position: relative;
+            top: 8px;
+        }
+        .drop-zone {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border: 1px dashed #aaa;
+        }
+        .preview {
+            width: 200px;
+            margin-top: 10px;
+        }
+        .message {
+            display: none;
+            font-size: 20px;
+            color: green;
+            margin-top: 10px;
+            font-family: 'phetsarath', sans-serif;
+        }
+        .button {
+            background: #ff85a2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background: #ff5c8a;
+        }
+    </style>
+</head>
+<body>
+    <h1> <span>Jigsaw</span> Puzzle <span>game </span> </h1>
+    <div class="game-container">
+        <div id="puzzleBoard" class="puzzle-board"></div>
+        <div class="message" id="successMessage">🎉🎉🎉 ເກັ່ງຫຼາຍໆ! 🎉🎉🎉</div>
+        <img src="/images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_d1fdd4d6.jpg" alt="ตัวอย่างจิ๊กซอว์" class="preview">
+    </div>
+
+    <button class="button" onclick="goToMenu()">Back to menu</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const board = document.getElementById("puzzleBoard");
+            const successMessage = document.getElementById("successMessage");
+
+            // ตั้งค่าขนาดและตำแหน่งของจิ๊กซอว์
+            const size = 100;
+            const gridSize = 3;
+            let pieces = [];
+
+            // สร้างช่องเปล่าสำหรับบอร์ด
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                let dropZone = document.createElement("div");
+                dropZone.classList.add("drop-zone");
+                dropZone.dataset.index = i;
+                board.appendChild(dropZone);
+            }
+
+            // สร้างชิ้นจิ๊กซอว์
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                let piece = document.createElement("div");
+                piece.classList.add("puzzle-piece");
+                piece.style.backgroundImage = "url('/images/รูปภาพ\ WhatsApp\ 2568-02-13\ เวลา\ 13.30.25_d1fdd4d6.jpg')";
+                piece.style.backgroundPosition = `-${(i % gridSize) * size}px -${Math.floor(i / gridSize) * size}px`;
+                piece.draggable = true;
+                piece.dataset.index = i;
+                pieces.push(piece);
+            }
+
+            // สุ่มตำแหน่งเริ่มต้นของชิ้นจิ๊กซอว์
+            pieces.sort(() => Math.random() - 0.5);
+            pieces.forEach(piece => board.appendChild(piece));
+
+            let draggedPiece = null;
+
+            // ฟังก์ชันเมื่อเริ่มลาก
+            function handleDragStart(e) {
+                draggedPiece = this;
+                setTimeout(() => (this.style.opacity = "0.5"), 0);
+            }
+
+            function handleDragEnd() {
+                this.style.opacity = "1";
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                if (!draggedPiece) return;
+
+                let targetZone = e.target;
+                if (targetZone.classList.contains("drop-zone") && !targetZone.hasChildNodes()) {
+                    if (targetZone.dataset.index === draggedPiece.dataset.index) {
+                        targetZone.appendChild(draggedPiece);
+                        draggedPiece.style.position = "static";
+                        draggedPiece.draggable = false;
+                        checkWin();
+                    }
+                }
+                draggedPiece = null;
+            }
+
+            function handleTouchStart(e) {
+                draggedPiece = e.target;
+                draggedPiece.style.opacity = "0.5";
+                e.preventDefault();
+            }
+
+            function handleTouchMove(e) {
+                if (!draggedPiece) return;
+                let touch = e.touches[0];
+                draggedPiece.style.position = "absolute";
+                draggedPiece.style.left = touch.clientX - size / 2 + "px";
+                draggedPiece.style.top = touch.clientY - size / 2 + "px";
+            }
+
+            function handleTouchEnd(e) {
+    if (!draggedPiece) return;
+    draggedPiece.style.opacity = "1";
+
+    let touch = e.changedTouches[0];
+    let dropZones = document.querySelectorAll(".drop-zone");
+
+    dropZones.forEach(zone => {
+        let rect = zone.getBoundingClientRect();
+
+        // ใช้ Math.floor() เพื่อลดความคลาดเคลื่อนของตำแหน่ง
+        let touchX = Math.floor(touch.clientX);
+        let touchY = Math.floor(touch.clientY);
+        let rectLeft = Math.floor(rect.left);
+        let rectRight = Math.floor(rect.right);
+        let rectTop = Math.floor(rect.top);
+        let rectBottom = Math.floor(rect.bottom);
+
+        if (
+            touchX > rectLeft &&
+            touchX < rectRight &&
+            touchY > rectTop &&
+            touchY < rectBottom &&
+            !zone.hasChildNodes()
+        ) {
+            if (zone.dataset.index === draggedPiece.dataset.index) {
+                zone.appendChild(draggedPiece);
+                draggedPiece.style.position = "static";
+                draggedPiece.draggable = false;
+                checkWin();
+            }
+        }
+    });
+
+    draggedPiece = null;
+}
+
+            function checkWin() {
+                let correctPieces = document.querySelectorAll(".drop-zone > .puzzle-piece");
+                if (correctPieces.length === gridSize * gridSize) {
+                    successMessage.style.display = "block";
+                }
+            }
+
+            // เพิ่ม event listener สำหรับลากบนเดสก์ท็อป
+            pieces.forEach(piece => {
+                piece.addEventListener("dragstart", handleDragStart);
+                piece.addEventListener("dragend", handleDragEnd);
+            });
+
+            let dropZones = document.querySelectorAll(".drop-zone");
+            dropZones.forEach(zone => {
+                zone.addEventListener("dragover", handleDragOver);
+                zone.addEventListener("drop", handleDrop);
+            });
+
+            // เพิ่ม event listener สำหรับสัมผัสบนมือถือ
+            pieces.forEach(piece => {
+                piece.addEventListener("touchstart", handleTouchStart);
+                piece.addEventListener("touchmove", handleTouchMove);
+                piece.addEventListener("touchend", handleTouchEnd);
+            });
+        });
+
+        function goToMenu() {
+            window.location.href = "menu.html";
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Noto+Sans+Lao+Looped:wght@100..900&family=Phetsarath:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* พื้นหลังแบบไล่สี */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fd);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ชื่อแกลเลอรี */
+        h2 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        #img5 {
+            position: relative;
+            bottom: 75px;
+        }
+
+        #img6 {
+            position: relative;
+            bottom: 60px;
+        }
+
+        #img7 {
+            position: relative;
+            bottom: 150px;
+        }
+
+        #video7 {
+            position: relative;
+            bottom: 75px;
+        }
+
+        #txt {
+            font-family: 'Phetsarath', sans-serif;
+            color: #a1c4fd;
+            font-size: 20px;
+            position: relative;
+            bottom: 50px;
+        }
+        /* กล่องที่เก็บรูปภาพ */
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 370px;
+            max-height: 70vh;  /* จำกัดความสูง */
+            overflow-y: auto;  /* เลื่อนดูรูปได้ */
+        }
+
+        /* แกลเลอรีแบบ Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        /* รูปภาพในแกลเลอรี */
+        .gallery img, .gallery video {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ปุ่มกลับไปเมนู */
+        .button {
+            background: #ff85a2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background: #ff5c8a;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>📸 <span style="font-style: italic;">our gallery</span> 📸</h2>
+
+    <div class="container">
+        <div class="gallery">
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_4c16d1a5.jpg" alt="รูป1">
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_837cdf2f.jpg" alt="รูป2">
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.25_d1fdd4d6.jpg" alt="รูป3">
+            <video controls autoplay muted loop>
+                <source src="video/วิดีโอ WhatsApp 2568-02-13 เวลา 13.30.31_733583ce.mp4" type="video/mp4">
+            </video>
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.26_a640ad90.jpg" alt="" id="img5">
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.24_2f0fd083.jpg" alt="">
+            <video id="video7" controls autoplay muted loop>
+                <source src="video/วิดีโอ WhatsApp 2568-02-13 เวลา 13.30.32_09379653.mp4" type="video/mp4">
+            </video>
+            <img src="images/รูปภาพ WhatsApp 2568-02-13 เวลา 13.30.33_442c122c.jpg" alt="" id="img6">
+            <img src="images/IMG-20230731-WA0000.jpg" alt="" id="img7">
+            <h2 id="txt">sorry ເດີ<br> ຮູບທາງຂ້າງນີ້ <br> 🤣🤣🤣</h2>
+        </div>
+    </div>
+
+    <button class="button" onclick="goToMenu()">Back to menu</button>
+
+    <script>
+        function goToMenu() {
+            window.location.href = "menu.html";
+        }
+    </script>
+
+</body>
+</html>
